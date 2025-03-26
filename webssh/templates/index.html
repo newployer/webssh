@@ -34,9 +34,41 @@
         font-family: '{{ font.family }}';
       }
       {% end %}
+      #password-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.9);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      #password-form {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: 300px;
+      }      
     </style>
   </head>
   <body>
+    <!-- 添加密码验证层 -->
+    <div id="password-overlay">
+      <div id="password-form">
+        <h3 class="text-center mb-4">访问验证</h3>
+        <div class="form-group">
+          <label for="access-password">请输入访问密码</label>
+          <input type="password" class="form-control" id="access-password">
+        </div>
+        <button id="submit-password" class="btn btn-primary btn-block mt-3">验证</button>
+        <div id="password-error" class="text-danger mt-2" style="display: none;">密码错误，请重试</div>
+      </div>
+    </div>
+  
     <div id="waiter" style="display: none"> Connecting ... </div>
 
     <div class="container form-container" style="display: none">
@@ -54,7 +86,7 @@
         <div class="row">
           <div class="col">
             <label for="Username">Username</label>
-            <input class="form-control" type="text" id="username" name="username" placeholder="root" value="" required>
+            <input class="form-control" type="text" id="username" name="username" value="" required>
           </div>
           <div class="col">
             <label for="Password">Password</label>
@@ -77,18 +109,12 @@
             <input class="form-control" type="password" id="totp" name="totp" value="">
           </div>
           <div class="col">
-            <label for="InitCmd">Init Command (execute the command after login)</label>
-            <input class="form-control" type="text" id="initcmd" name="initcmd" value="">
           </div>
         </div>
         <input type="hidden" id="term" name="term" value="xterm-256color">
         {% module xsrf_form_html() %}
         <button type="submit" class="btn btn-primary">Connect</button>
         <button type="reset" class="btn btn-danger">Reset</button>
-        <button type="button" class="btn btn-info" id="sshlinkBtn">SSH Link</button>
-        <div id="sshlink"></div>
-        <div>Github: <a href="https://github.com/crazypeace/huashengdun-webssh">https://github.com/crazypeace/huashengdun-webssh</a></div>
-        <div>自建教程: <a href="https://zelikk.blogspot.com/search/label/webssh">https://zelikk.blogspot.com/search/label/webssh</a></div>
       </form>
     </div>
 
@@ -103,5 +129,6 @@
     <script src="static/js/xterm.min.js"></script>
     <script src="static/js/xterm-addon-fit.min.js"></script>
     <script src="static/js/main.js"></script>
+    <script src="static/js/pwd.js"></script>
   </body>
 </html>
